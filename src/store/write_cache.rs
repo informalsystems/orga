@@ -11,13 +11,13 @@ pub struct WriteCache<'a, S: Store> {
     store: &'a mut S
 }
 
-impl WriteCache<'_, NullStore> {
+impl MapStore  {
     pub fn new() -> Self {
         WriteCache::wrap(unsafe { &mut NULL_STORE })
     }
 }
 
-impl Default for WriteCache<'_, NullStore> {
+impl Default for MapStore {
     fn default() -> Self {
         Self::new()
     }
