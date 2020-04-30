@@ -1,4 +1,5 @@
 use crate::error::Result;
+use crate::state::State;
 use std::ops::{Deref, DerefMut};
 
 mod nullstore;
@@ -25,7 +26,13 @@ pub trait Write {
     fn delete(&mut self, key: &[u8]) -> Result<()>;
 }
 
-pub trait Store: Read + Write {}
+pub trait Store: Read + Write {
+    fn wrap<'a, T: State<&'a mut Self>>(&'a mut self) -> Result<T>
+        where Self: Sized
+    {
+        T::wrap_store(self)
+    }
+}
 
 impl<S: Read + Write + Sized> Store for S {}
 
@@ -53,7 +60,8 @@ pub trait Flush {
 
 #[cfg(test)]
 mod tests {
-    use super::{NullStore, Read};
+    use super::{NullStore, Read, Store};
+    use crate::Value;
 
     #[test]
     fn fixed_length_slice_key() {
@@ -65,5 +73,10 @@ mod tests {
     fn slice_key() {
         let key = vec![1, 2, 3, 4];
         NullStore.get(key.as_slice()).unwrap();
+    }
+
+    #[test]
+    fn wrap() {
+        let _: Value<_, u64> = NullStore.wrap().unwrap();
     }
 }
