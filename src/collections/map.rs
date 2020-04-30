@@ -1,6 +1,6 @@
 use std::borrow::Borrow;
 use std::marker::PhantomData;
-use crate::{WrapStore, Store, Encode, Decode, Result};
+use crate::{State, Store, Encode, Decode, Result};
 
 pub struct Map<S, K, V>
     where
@@ -13,7 +13,7 @@ pub struct Map<S, K, V>
     value_type: PhantomData<V>
 }
 
-impl<S, K, V> WrapStore<S> for Map<S, K, V>
+impl<S, K, V> State<S> for Map<S, K, V>
     where
         S: Store,
         K: Encode + Decode,
