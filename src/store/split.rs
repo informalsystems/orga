@@ -1,7 +1,6 @@
 use super::prefix::Prefixed;
 use super::share::Shared;
-use super::{Store, Read, Write};
-use crate::Result;
+use super::Store;
 
 // TODO: can we do this without copying every time we prefix the key? can
 // possibly change Store methods to generically support iterator-based

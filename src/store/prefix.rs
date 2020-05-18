@@ -1,4 +1,4 @@
-use super::{Store, Read, Write};
+use super::{Read, Write};
 use crate::Result;
 
 pub struct Prefixed<S> {
@@ -42,7 +42,6 @@ impl<W: Write> Write for Prefixed<W> {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use crate::{MapStore, Read, Write, Store};
 
     #[test]

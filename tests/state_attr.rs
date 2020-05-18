@@ -1,4 +1,4 @@
-use orga::{Store, MapStore, State, Value, state, Read};
+use orga::{Store, MapStore, Value, state, Read};
 
 #[state]
 struct MyStruct<S: Store> {

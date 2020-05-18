@@ -1,6 +1,6 @@
 use std::rc::Rc;
 use std::cell::RefCell;
-use super::{Store, Read, Write};
+use super::{Read, Write};
 use crate::Result;
 
 // TODO: we can probably use UnsafeCell instead of RefCell since operations are
@@ -41,7 +41,6 @@ impl<W: Write> Write for Shared<W> {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use crate::{MapStore, Read, Write, Store};
 
     #[test]
