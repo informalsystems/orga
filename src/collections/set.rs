@@ -6,7 +6,9 @@ pub struct Set<S: Store, T: Encode + Decode> {
     map: Map<S, T, ()>
 }
 
-impl<S: Store, T: Encode + Decode> State<S> for Set<S, T> {
+impl<S: Store, T: Encode + Decode> State for Set<S, T> {
+    type Store = S;
+    
     fn wrap_store(store: S) -> Result<Self> {
         Ok(Self {
             map: Map::wrap_store(store)?

@@ -27,7 +27,9 @@ pub fn state(
     let output = quote! {
         #item
 
-        impl<#store_outer_param> orga::State<#store_type_name> for #name<#store_type_name> {
+        impl<#store_outer_param> orga::State for #name<#store_type_name> {
+            type Store = #store_type_name;
+
             fn wrap_store(store: #store_type_name) -> orga::Result<Self> {
                 let mut splitter = orga::Splitter::new(store);
                 Ok(Self {

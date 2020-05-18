@@ -5,7 +5,9 @@ use std::ops::{Deref, DerefMut};
 
 pub struct WrapperStore<S: Store>(S);
 
-impl<S: Store> State<S> for WrapperStore<S> {
+impl<S: Store> State for WrapperStore<S> {
+    type Store = S;
+    
     fn wrap_store(store: S) -> Result<WrapperStore<S>> {
         Ok(WrapperStore(store))
     }

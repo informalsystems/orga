@@ -31,7 +31,7 @@ pub trait Write {
 }
 
 pub trait Store: Read + Write + Sized {
-    fn wrap<T: State<Self>>(self) -> Result<T> {
+    fn wrap<T: State<Store = Self>>(self) -> Result<T> {
         T::wrap_store(self)
     }
 
@@ -82,7 +82,7 @@ pub trait Flush {
 
 #[cfg(test)]
 mod tests {
-    use super::{NullStore, MapStore, Read, Store};
+    use super::{NullStore, Read, Store};
     use crate::Value;
 
     #[test]

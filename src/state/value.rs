@@ -27,7 +27,9 @@ pub struct Value<S: Store, T: Encode + Decode> {
     value_type: PhantomData<T>,
 }
 
-impl<S: Store, T: Encode + Decode> State<S> for Value<S, T> {
+impl<S: Store, T: Encode + Decode> State for Value<S, T> {
+    type Store = S;
+    
     fn wrap_store(store: S) -> std::result::Result<Value<S, T>, failure::Error> {
         Ok(Value {
             store,

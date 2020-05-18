@@ -2,9 +2,9 @@ use crate::{Decode, Encode, Result, Store, Value, State};
 use failure::bail;
 use std::io::{Read, Write};
 use std::marker::PhantomData;
+use crate::state::IntoState;
 
 pub struct Deque<S: Store, T: Encode + Decode> {
-    // TODO: make a type that holds the store reference
     store: S,
     state: Meta,
     item_type: PhantomData<T>,
@@ -38,7 +38,9 @@ impl Decode for Meta {
     }
 }
 
-impl<S: Store, T: Encode + Decode> State<S> for Deque<S, T> {
+impl<S: Store, T: Encode + Decode> State for Deque<S, T> {
+    type Store = S;
+
     fn wrap_store(mut store: S) -> Result<Self> {
         let state: Meta = Value::wrap_store(&mut store)?.get_or_default()?;
 
@@ -47,6 +49,15 @@ impl<S: Store, T: Encode + Decode> State<S> for Deque<S, T> {
             state,
             item_type: PhantomData,
         })
+    }
+}
+
+impl<S: Store, T: Encode + Decode> IntoState for Deque<S, T> {
+    type Store = S;
+    type Target = Self;
+
+    fn into_state(self, store: Self::Store) -> Result<Self::Target> {
+        State::wrap_store(store)
     }
 }
 

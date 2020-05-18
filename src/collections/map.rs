@@ -13,12 +13,14 @@ pub struct Map<S, K, V>
     value_type: PhantomData<V>
 }
 
-impl<S, K, V> State<S> for Map<S, K, V>
+impl<S, K, V> State for Map<S, K, V>
     where
         S: Store,
         K: Encode + Decode,
         V: Encode + Decode
 {
+    type Store = S;
+    
     fn wrap_store(store: S) -> Result<Self> {
         Ok(Self {
             store,
