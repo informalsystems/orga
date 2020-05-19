@@ -1,8 +1,8 @@
 use crate::{Decode, Encode, Result, Store, Value, State};
 use failure::bail;
-use std::io::{Read, Write};
 use std::marker::PhantomData;
 use crate::state::IntoState;
+use crate as orga;
 
 pub struct Deque<S: Store, T: Encode + Decode> {
     store: S,
@@ -10,32 +10,10 @@ pub struct Deque<S: Store, T: Encode + Decode> {
     item_type: PhantomData<T>,
 }
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Encode, Decode)]
 struct Meta {
     head: u64,
     tail: u64,
-}
-
-// TODO: use a derive macro
-impl Encode for Meta {
-    fn encode_into<W: Write>(&self, dest: &mut W) -> Result<()> {
-        self.head.encode_into(dest)?;
-        self.tail.encode_into(dest)
-    }
-
-    fn encoding_length(&self) -> Result<usize> {
-        Ok(self.head.encoding_length()? + self.tail.encoding_length()?)
-    }
-}
-
-// TODO: use a derive macro
-impl Decode for Meta {
-    fn decode<R: Read>(mut input: R) -> Result<Self> {
-        Ok(Self {
-            head: u64::decode(&mut input)?,
-            tail: u64::decode(&mut input)?,
-        })
-    }
 }
 
 impl<S: Store, T: Encode + Decode> State for Deque<S, T> {
