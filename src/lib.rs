@@ -5,6 +5,8 @@
 #![feature(map_first_last)]
 #![feature(generic_associated_types)]
 
+#![allow(incomplete_features)]
+
 /// Integration with ABCI (gated by `abci` feature).
 #[cfg(feature = "abci")]
 pub mod abci;
